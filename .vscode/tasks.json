@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "build packet sniffer",
+          "type": "shell",
+          "command": "gcc",
+          "args": [
+              "${workspaceFolder}/src/main.c",
+              "${workspaceFolder}/src/packet_sniffer.c",
+              "-o",
+              "${workspaceFolder}/packet_sniffer.exe",
+              "-I", "${workspaceFolder}/headers",
+              "-I", "C:/Users/Ishan Mukherjee/Documents/School/packet-sniffer/npcap/Include",
+              "-L", "C:/Users/Ishan Mukherjee/Documents/School/packet-sniffer/npcap/Lib",
+              "-lwpcap",
+              "-lPacket"
+          ],
+          "group": {
+              "kind": "build",
+              "isDefault": true
+          },
+          "problemMatcher": ["$gcc"],
+          "detail": "Builds the packet sniffer application with Npcap"
+      }
+  ]
+}
