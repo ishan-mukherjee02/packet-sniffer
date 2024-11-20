@@ -9,3 +9,7 @@ LDFLAGS = -L$(LIBRARY_PATH) -lwpcap -lPacket
 # Build target
 packet_sniffer: main.c packet_sniffer.c
     gcc -o packet_sniffer main.c packet_sniffer.c $(CFLAGS) $(LDFLAGS)
+
+test: $(TEST_SRC)
+	$(CC) $(CFLAGS) $(TEST_SRC) -o test_runner $(LDFLAGS)
+	./test_runner
