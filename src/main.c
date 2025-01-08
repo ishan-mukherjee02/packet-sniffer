@@ -85,6 +85,35 @@ int main(int argc, char *argv[]) {
                 list_network_devices();
                 break;
             case 'b':
+                // Choose which network device to listen on
+                printf("Enter the number of the network device to listen on: ");
+                int device_num;
+
+                if (scanf("%d", &device_num) != 1) {
+                    fprintf(stderr, "Invalid input. Please enter a number.\n");
+                    break;
+                }
+
+                // Retrieve the device list
+                pcap_if_t *alldevs;
+                pcap_if_t *device;
+                char errbuf[PCAP_ERRBUF_SIZE];
+                if (pcap_findalldevs(&alldevs, errbuf) == -1) {
+                    fprintf(stderr, "Error finding devices: %s\n", errbuf);
+                    break;
+                }
+
+                // Find the selected device
+                int i = 0;
+                for (device = alldevs; device; device = device->next) {
+                    if (++i == device_num) {
+                        net = device->name;
+                        break;
+                    }
+                }
+
+                pcap_freealldevs(alldevs);
+
                 if (init_packet_sniffer(net) == 0) {
                     printf("Packet capture started on %s\n", net);
                     start_packet_capture(packet_handler);
