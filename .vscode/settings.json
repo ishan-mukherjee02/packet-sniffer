@@ -60,6 +60,9 @@
     "packet_sniffer.h": "c",
     "stdlib.h": "c",
     "signal.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "pcap.h": "c",
+    "_mingw.h": "c",
+    "msvcrtver.h": "c"
   }
 }

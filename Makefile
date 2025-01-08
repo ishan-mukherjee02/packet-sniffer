@@ -11,5 +11,5 @@ packet_sniffer: main.c packet_sniffer.c
     gcc -o packet_sniffer main.c packet_sniffer.c $(CFLAGS) $(LDFLAGS)
 
 test: $(TEST_SRC)
-	$(CC) $(CFLAGS) $(TEST_SRC) -o test_runner $(LDFLAGS)
+	$(CC) $(CFLAGS) $(TEST_SRC) -o test_runner $(CFLAGS) $(LDFLAGS)
 	./test_runner

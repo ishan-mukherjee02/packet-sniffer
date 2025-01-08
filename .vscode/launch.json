@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "${workspaceFolder}/packet_sniffer.exe",
+      "cwd": "c:/Users/Ishan Mukherjee/Documents/School/packet-sniffer/src",
+      "program": "c:/Users/Ishan Mukherjee/Documents/School/packet-sniffer/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
@@ -18,10 +18,7 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-        
-      ],
-      "preLaunchTask": "build packet sniffer",
-      "internalConsoleOptions": "neverOpen"
+      ]
     }
   ]
 }

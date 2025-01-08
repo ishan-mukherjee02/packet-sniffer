@@ -12,6 +12,11 @@
 int init_packet_sniffer(const char  *net);
 
 /**
+ * Lists all available network devices
+ */
+void list_network_devices();
+
+/**
  * Starts the packet capture process
  * 
  * @param packet_handler Callback function to process each captured packet.

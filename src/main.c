@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     net = argv[1];
   }
   
-  //sniff packets
+  // sniff packets
 
   // set up any filters
 

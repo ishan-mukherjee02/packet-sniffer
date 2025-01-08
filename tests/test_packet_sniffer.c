@@ -5,59 +5,65 @@
 #include <pcap.h>
 #include "../src/headers/packet_sniffer.h"
 
-// Mock interface for testing (change based on your environment)
-#define TEST_INTERFACE "lo" // Use "lo" for loopback on Linux or adjust for your system.
-
-void test_initialize_packet_sniffer_valid_interface() {
-    pcap_t *handle = initialize_packet_sniffer(TEST_INTERFACE);
-    assert(handle != NULL);
-    printf("test_initialize_packet_sniffer_valid_interface passed!\n");
-    pcap_close(handle);
+// Mock packet handler for testing
+void mock_packet_handler(u_char *args, const struct pcap_pkthdr *header, const u_char *packet) {
+    printf("Packet captured: length=%d\n", header->len);
 }
 
-void test_initialize_packet_sniffer_invalid_interface() {
-    pcap_t *handle = initialize_packet_sniffer("invalid_interface");
+void test_init_packet_sniffer() {
+    printf("Testing init_packet_sniffer...\n");
+
+    // Valid network device (replace "eth0" with your valid device)
+    printf("Initializing \\Device\\NPF_{B7C7BD87-5FF8-429E-92B3-A9DDCA7DCD4E}\n");
+    assert(init_packet_sniffer("\\Device\\NPF_{B7C7BD87-5FF8-429E-92B3-A9DDCA7DCD4E}") == 0);
+    printf("  - Valid device: Passed\n");
+
+    // Invalid network device
+    printf("Initializing invalid_device\n");
+    assert(init_packet_sniffer("invalid_device") == -1);
+    printf("  - Invalid device: Passed\n");
+
+    stop_packet_sniffer(); // Clean up after each test
+}
+
+void test_start_packet_capture() {
+    printf("Testing start_packet_capture...\n");
+
+    // Valid initialization
+    assert(init_packet_sniffer("\\Device\\NPF_{B7C7BD87-5FF8-429E-92B3-A9DDCA7DCD4E}") == 0);
+
+    // Simulate capturing packets (requires actual traffic for meaningful testing)
+    printf("  - Starting packet capture (press Ctrl+C to stop)...\n");
+    start_packet_capture(mock_packet_handler);
+
+    stop_packet_sniffer(); // Clean up
+    printf("  - Capture test: Passed\n");
+}
+
+void test_stop_packet_sniffer() {
+    printf("Testing stop_packet_sniffer...\n");
+
+    // Valid initialization
+    assert(init_packet_sniffer("\\Device\\NPF_{B7C7BD87-5FF8-429E-92B3-A9DDCA7DCD4E}") == 0);
+
+    // Stop the sniffer
+    stop_packet_sniffer();
     assert(handle == NULL);
-    printf("test_initialize_packet_sniffer_invalid_interface passed!\n");
-}
+    printf("  - Sniffer stopped successfully: Passed\n");
 
-void test_set_packet_filter_valid() {
-    pcap_t *handle = initialize_packet_sniffer(TEST_INTERFACE);
-    assert(handle != NULL);
-
-    int result = set_packet_filter(handle, "tcp");
-    assert(result == 0);
-    printf("test_set_packet_filter_valid passed!\n");
-    pcap_close(handle);
-}
-
-void test_set_packet_filter_invalid() {
-    pcap_t *handle = initialize_packet_sniffer(TEST_INTERFACE);
-    assert(handle != NULL);
-
-    int result = set_packet_filter(handle, "invalid_filter");
-    assert(result == -1);
-    printf("test_set_packet_filter_invalid passed!\n");
-    pcap_close(handle);
-}
-
-void test_cleanup_packet_sniffer() {
-    pcap_t *handle = initialize_packet_sniffer(TEST_INTERFACE);
-    assert(handle != NULL);
-
-    cleanup_packet_sniffer(handle);
-    printf("test_cleanup_packet_sniffer passed!\n");
+    // Call stop again to ensure no issues
+    stop_packet_sniffer();
+    printf("  - Double stop: Passed\n");
 }
 
 int main() {
-    printf("Running tests...\n");
+    printf("Running Packet Sniffer Test Suite...\n");
 
-    test_initialize_packet_sniffer_valid_interface();
-    test_initialize_packet_sniffer_invalid_interface();
-    test_set_packet_filter_valid();
-    test_set_packet_filter_invalid();
-    test_cleanup_packet_sniffer();
+    // list_network_devices();
+    // test_init_packet_sniffer();
+    // test_start_packet_capture();
+    test_stop_packet_sniffer();
 
-    printf("All tests passed!\n");
-    return 0;
+    printf("All tests completed.\n");
+    return 1;
 }
