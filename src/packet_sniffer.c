@@ -28,7 +28,7 @@ void list_network_devices() {
     printf("Available network devices:\n");
     int i = 0;
     for (device = alldevs; device; device = device->next) {
-        printf("%d. %s", ++i, device->name);
+        printf("\t%d. %s", ++i, device->name);
         if (device->description) {
             printf(" (%s)", device->description);
         }
@@ -43,10 +43,18 @@ void list_network_devices() {
 }
 
 void start_packet_capture(void (*packet_handler)(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)) {
-    pcap_loop(handle, 0, packet_handler, NULL);
+    if (handle == NULL) {
+        fprintf(stderr, "Packet sniffer handle is not initialized.\n");
+        return;
+    }
+    if (pcap_loop(handle, 0, packet_handler, NULL) < 0) {
+        fprintf(stderr, "Error occurred during packet capture: %s\n", pcap_geterr(handle));
+    }
 }
 
 void stop_packet_sniffer(void) {
-    pcap_close(handle);
-    handle = NULL;
+    if (handle != NULL) {
+        pcap_close(handle);
+        handle = NULL;
+    }
 }
